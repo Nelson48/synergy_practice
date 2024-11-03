@@ -1,0 +1,47 @@
+
+<!DOCTYPE html>
+<html lang="ru" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="CSS/styles.css">
+    <title>Создайте приложения для блога</title>
+  </head>
+  <body>
+
+    <form action="register.php" method="post">
+      <label for="username">Логин:</label>
+      <input type="text" id="username" name="username"><br><br>
+      <label for="password">Пароль:</label>
+      <input type="password" id="password" name="password"><br><br>
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email"><br><br>
+      <input type="submit" value="Зарегистрироваться" name="register">
+    </form>
+    <h2>Напиши, что ты думаешь</h2>
+    <form action="/post" method="post">
+      <label for="title">Тема</label>
+      <input type="text" id="title" name="title"><br><br>
+      <label for="content">Содержание</label>
+      <textarea id="content" name="content"></textarea><br><br>
+      <input type="submit" value="Опубликовать" name="create_post">
+    </form>
+    <h2>Подписаться тут</h2>
+    <div id="subscriptions"></div>
+    <button onclick="fetchSubscriptions()">Подпишись</button>
+  </body>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    function fetchSubscriptions() {
+      axios.get('/subscriptions')
+        .then(response => {
+          let subscriptions = response.data;
+          let html = '';
+          for (let subscription of subscriptions) {
+            html += `<li>${subscription.title}</li>`;
+          }
+          document.getElementById('subscriptions').innerHTML = html;
+        })
+        .catch(error => console.error(error));
+    }
+  </script>
+</html>
